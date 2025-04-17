@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/Admin");
+const { loginAgent } = require('../controllers/agentAuthController');
 
 const router = express.Router();
 
@@ -34,5 +35,8 @@ router.post("/register", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+
+router.post('/agent/login', loginAgent);
 
 module.exports = router;

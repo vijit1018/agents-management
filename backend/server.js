@@ -17,6 +17,8 @@ app.use('/api/auth/admin', require('./routes/authRoutes'));
 app.use('/api/agents', require('./routes/agentRoutes')); 
 app.use('/api/tasks', require('./routes/taskRoutes'));
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/agents/juniors', require('./routes/juniorAgentRoutes'));
+app.use('/api/auth/agent', require('./routes/juniorAgentRoutes'));
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

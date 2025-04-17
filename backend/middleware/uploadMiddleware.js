@@ -10,7 +10,7 @@ const upload = multer({
         } else {
             cb(new Error('Only CSV files are allowed'), false);
         }
-    }
+            }
 });
 
 module.exports = upload;

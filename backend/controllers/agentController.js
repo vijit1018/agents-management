@@ -10,22 +10,24 @@ exports.addAgent = async (req, res) => {
         if (existingAgent) return res.status(400).json({ message: "Agent already exists" });
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newAgent = new Agent({ name, email, mobile, password: hashedPassword });
+        const newAgent = new Agent({ name, email, mobile, adminId: req.user.id ,password: hashedPassword });
 
         await newAgent.save();
         res.status(201).json({ message: "Agent added successfully" });
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
+        console.error("Error adding agent:", error);
     }
 };
 
 // Get all agents
 exports.getAgents = async (req, res) => {
     try {
-        const agents = await Agent.find().select("-password"); // Exclude password
+        const agents = await Agent.find({ adminId: req.user.id }).select("-password"); // Exclude password
         res.json(agents);
     } catch (error) {
         res.status(500).json({ message: "Server error" });
+        console.error("Error listing agents:", error);
     }
 };
 
@@ -40,6 +42,7 @@ exports.updateAgent = async (req, res) => {
         res.json({ message: "Agent updated successfully", updatedAgent });
     } catch (error) {
         res.status(500).json({ message: "Server error" });
+        console.error("Error updating agent:", error);
     }
 };
 
@@ -53,5 +56,6 @@ exports.deleteAgent = async (req, res) => {
         res.json({ message: "Agent deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: "Server error" });
+        console.error("Error deleting agent:", error);
     }
 };
